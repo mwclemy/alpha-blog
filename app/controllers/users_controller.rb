@@ -9,7 +9,7 @@ class UsersController < ApplicationController
             flash[:notice] = "Welcome #{@user.username} to AlphaBlog."
             redirect_to articles_path
         else
-            redirect_to "new"
+            render "new"
         end
     end
 
