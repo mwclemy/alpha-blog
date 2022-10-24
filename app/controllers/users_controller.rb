@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
     helper_method :current_user
-    before_action :set_user, only:[:show, :edit, :update]
+    before_action :set_user, only:[:show, :edit, :update, :destroy]
     before_action :require_user, only:[:edit, :update]
-    before_action :require_same_user, only:[:edit, :update]
+    before_action :require_same_user, only:[:edit, :update, :destroy]
 
     def index
         @users = User.paginate(page: params[:page], per_page: 5)
@@ -38,6 +38,13 @@ class UsersController < ApplicationController
             render 'edit'
         end
     end
+
+    def destroy 
+        @user.destroy
+        session["user_id"] = nil
+        flash[:notice]="The user and all associated articles have been successfully deleted"
+        redirect_to articles_path
+    end 
 
     private
     def set_user
